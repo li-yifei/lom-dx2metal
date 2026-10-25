@@ -65,8 +65,8 @@ type run struct {
 
 	log     []string // core.Options.Log 的日志行
 	errors  []failure
-	input   bool           // Run 返回了 *core.InputError
-	errMsg  string         // 最后一条 error 事件的消息，或 Run 返回的错误
+	input   bool        // Run 返回了 *core.InputError
+	errMsg  string      // 最后一条 error 事件的消息，或 Run 返回的错误
 	res     core.Result // Run 返回的汇总（出错时为零值）
 	outcome outcome
 	cancel  bool // 用户请求取消

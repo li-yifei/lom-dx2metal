@@ -16,6 +16,11 @@ from lom_arm64.shaders import bulk, hlslcc_bridge  # noqa: E402
 
 game, out = Path(sys.argv[1]), Path(sys.argv[2])
 src_files = bulk.shader_files(game)
+# globalgamemanagers 只放进 in/（图形 API 改写的输入；Python 版的 shader 转换不碰它）。
+gg = out / "in" / "globalgamemanagers"
+if not gg.exists():
+    gg.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["/bin/cp", "-c", str(game / "globalgamemanagers"), str(gg)], check=True)
 for name in ("in", "out"):
     for f in src_files:
         dst = out / name / f.relative_to(game)

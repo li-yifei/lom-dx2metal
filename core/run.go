@@ -90,6 +90,16 @@ type audit struct {
 	Files   []auditFile              `json:"files"`
 	Shaders map[string]*shaderReport `json:"shaders"`
 	Totals  *Result                  `json:"totals"`
+	// globalgamemanagers 里 BuildSettings.m_GraphicsAPIs 的改动记录（--keep-graphics-api 时为空）。
+	GraphicsAPIs *graphicsAudit `json:"graphics_apis,omitempty"`
+}
+
+type graphicsAudit struct {
+	File    string `json:"file"`
+	Before  []int  `json:"before"`
+	After   []int  `json:"after"`
+	Written bool   `json:"written"`
+	Error   string `json:"error,omitempty"`
 }
 
 // target 是扫描出的一个待转换文件。
@@ -207,14 +217,20 @@ func run(ctx context.Context, opt Options, onEvent func(Event)) (res *Result, er
 		}
 	}
 	em.progress(len(candidates), len(candidates), "files", "")
-	if len(targets) == 0 {
+	gfxData, err := patchGraphicsAPIs(in, st.IsDir(), opt.KeepGraphicsAPI, au, result)
+	if err != nil {
+		return nil, err
+	}
+	if len(targets) == 0 && gfxData == nil { // 既没有 shader 要转、也没有图形 API 要改
 		return nil, inputErr("%s 下没有只带 D3D11 程序的 Shader", in)
 	}
 	logf("找到 %d 个含 D3D11 Shader 的文件，共 %d 个程序", len(targets), totalPrograms)
 
-	dev, err := metal.NewDevice()
-	if err != nil {
-		return nil, err
+	var dev *metal.Device
+	if len(targets) > 0 {
+		if dev, err = metal.NewDevice(); err != nil {
+			return nil, err
+		}
 	}
 
 	// 2. 转换并写出（逐文件；文件内按 shader 并行）。
@@ -343,6 +359,13 @@ func run(ctx context.Context, opt Options, onEvent func(Event)) (res *Result, er
 
 	// 3. audit。
 	em.step("write")
+	if gfxData != nil {
+		if err := writeAtomic(filepath.Join(out, "globalgamemanagers"), gfxData); err != nil {
+			return nil, err
+		}
+		au.GraphicsAPIs.Written = true
+		logf("globalgamemanagers：图形 API %v → %v", au.GraphicsAPIs.Before, au.GraphicsAPIs.After)
+	}
 	if err := os.MkdirAll(filepath.Dir(auditPath), 0o755); err != nil {
 		return nil, err
 	}
@@ -444,4 +467,43 @@ func writeAtomic(path string, data []byte) error {
 		return err
 	}
 	return os.Rename(tmp, path)
+}
+
+// patchGraphicsAPIs 把 globalgamemanagers 里 BuildSettings.m_GraphicsAPIs 改成只含 Metal（16），省得玩家拼 .app 时手工改
+// （Python 版 assemble.patch_settings 的同一步）。只有列表不是 [16] 时才返回要写出的字节；结果记入 audit。
+// in 为目录时处理 <in>/globalgamemanagers；in 为单个文件且名为 globalgamemanagers 时处理它本身。
+func patchGraphicsAPIs(in string, isDir, keep bool, au *audit, result *Result) ([]byte, error) {
+	path := in
+	if isDir {
+		path = filepath.Join(in, "globalgamemanagers")
+	} else if filepath.Base(in) != "globalgamemanagers" {
+		return nil, nil
+	}
+	if keep {
+		return nil, nil
+	}
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return nil, nil // 没有 globalgamemanagers：不是错误（例如只给了 bundle 目录）
+	}
+	rec := &graphicsAudit{File: "globalgamemanagers", After: []int{serialized.GraphicsMetal}}
+	au.GraphicsAPIs = rec
+	f, err := serialized.Parse(b)
+	if err == nil {
+		var changed bool
+		rec.Before, changed, err = f.SetGraphicsAPIs(rec.After)
+		if err == nil {
+			result.GraphicsBefore = rec.Before
+			if !changed {
+				return nil, nil
+			}
+			result.GraphicsPatched = true
+			return f.Bytes(), nil
+		}
+	}
+	rec.Error = truncate(err.Error(), 300)
+	if !isDir {
+		return nil, inputErr("globalgamemanagers：%v", err)
+	}
+	return nil, nil
 }

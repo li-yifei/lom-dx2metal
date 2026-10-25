@@ -166,3 +166,10 @@ oracle 目录由测试参数 `-oracle <dir>` 指定，默认 `/Users/bob/lom-ws/
 更新 2026-10-25（夜）：目录重排，以 GUI 为主要交付物。`convert/` 改名 `core/`（公开 API 不变，只是包名 `convert`→`core`），
 `cmd/dx2metal-gui/` 升到顶层 `gui/`，`internal/` 留在根（`cmd/dx2metal` 的 inspect/verify 也要用）。根 go.mod 升到 go 1.27.1、
 合并为单 module，`GOTOOLCHAIN=auto` 自动取工具链，GUI 不再是子 module。本文前面的目录树与"cmd/dx2metal-gui"字样以此为准。
+
+更新 2026-10-25（图形 API）：`convert`/`core.Run` 默认把 `--in` 下 `globalgamemanagers` 的 BuildSettings(ClassID 141).m_GraphicsAPIs 改成 `[16]`（Metal），
+只在列表不是 `[16]` 时把 `globalgamemanagers` 写到 `--out`，audit 记 `graphics_apis`（before/after/written）；`--keep-graphics-api`
+（`Options.KeepGraphicsAPI`）关闭；`inspect` 显示列表；`Result` 新增 GraphicsBefore/GraphicsPatched（不进 JSON 进度事件）。
+BuildSettings 类型树从 UnityPy 导出内嵌（`internal/serialized/typetree_buildsettings_2020_3.json`）。只改对象字节、保留 Unity 原布局，
+所以与原版只差 1 字节；与 Python 版 `assemble.patch_settings` 的产物文件级不相等，原因是 UnityPy 保存时把数据区起点从 4096 改成按 16 对齐
+并在末尾补齐（对象、元数据、数据区均逐字节相同，见 docs/ACCEPTANCE.md）。输入里既没有可转换的 shader 也没有要改的图形 API 时仍报输入错误。

@@ -14,8 +14,11 @@ import (
 	"sort"
 )
 
-// ClassShader 是 Unity Shader 的 ClassID。
-const ClassShader = 48
+// ClassID。
+const (
+	ClassShader        = 48
+	ClassBuildSettings = 141
+)
 
 // Type 是元数据类型表的一项。
 type Type struct {
@@ -248,8 +251,11 @@ func (f *File) TreeFor(o *Object) (*Node, error) {
 	if t := f.Types[o.TypeID].Tree; t != nil {
 		return t, nil
 	}
-	if o.ClassID == ClassShader {
+	switch o.ClassID {
+	case ClassShader:
 		return ShaderTypeTree()
+	case ClassBuildSettings:
+		return BuildSettingsTypeTree()
 	}
 	return nil, fmt.Errorf("ClassID %d 没有类型树", o.ClassID)
 }

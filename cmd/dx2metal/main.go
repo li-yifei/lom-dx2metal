@@ -25,8 +25,9 @@ import (
 const Version = "0.1.0"
 
 const usage = `用法：
-  dx2metal convert --in <Data目录或单个资产文件> --out <输出目录> [--only <shader名>...] [--audit <json>] [--progress-json] [--jobs N]
-  dx2metal inspect <资产文件>     列出 Shader 对象、各平台程序数、已有 Metal 程序的 tail 摘要
+  dx2metal convert --in <Data目录或单个资产文件> --out <输出目录> [--only <shader名>...] [--audit <json>] [--progress-json] [--jobs N] [--keep-graphics-api]
+                   默认还会把 globalgamemanagers 的图形 API 列表改成只含 Metal（16）并写到输出目录；--keep-graphics-api 关闭
+  dx2metal inspect <资产文件>     列出 Shader 对象、各平台程序数、已有 Metal 程序的 tail 摘要；globalgamemanagers 显示图形 API 列表
   dx2metal verify <资产文件>      对每个 Metal 程序做 tail parse→write 字节往返，报告不一致
   dx2metal version
 `
@@ -73,6 +74,7 @@ func cmdConvert(args []string) int {
 	fs.Var(&only, "only", "只转换这个 shader（可重复）")
 	fs.StringVar(&opt.AuditPath, "audit", "", "audit JSON 路径（默认 <out>/dx2metal-audit.json）")
 	fs.IntVar(&opt.Jobs, "jobs", 0, "并行 shader 数（默认 CPU 数）")
+	fs.BoolVar(&opt.KeepGraphicsAPI, "keep-graphics-api", false, "不改 globalgamemanagers 的 BuildSettings.m_GraphicsAPIs")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -209,6 +211,16 @@ func cmdInspect(args []string, verify bool) int {
 			return 2
 		}
 		files = append(files, f)
+		if !verify {
+			if _, err := f.BuildSettings(); err == nil {
+				apis, err := f.GraphicsAPIs()
+				if err != nil {
+					fmt.Printf("BuildSettings：读取失败：%v\n", err)
+				} else {
+					fmt.Printf("BuildSettings.m_GraphicsAPIs = %v（%s）\n", apis, graphicsNames(apis))
+				}
+			}
+		}
 	}
 	bad, checked := 0, 0
 	for _, f := range files {
@@ -264,4 +276,19 @@ func cmdInspect(args []string, verify bool) int {
 		return 1
 	}
 	return 0
+}
+
+// GraphicsDeviceType 常见值的名字。
+var graphicsAPINames = map[int]string{2: "Direct3D11", 8: "Null", 11: "OpenGLES2", 12: "OpenGLES3", 16: "Metal", 17: "OpenGLCore", 18: "Direct3D12", 21: "Vulkan"}
+
+func graphicsNames(apis []int) string {
+	var names []string
+	for _, a := range apis {
+		if n, ok := graphicsAPINames[a]; ok {
+			names = append(names, n)
+		} else {
+			names = append(names, fmt.Sprint(a))
+		}
+	}
+	return strings.Join(names, ", ")
 }

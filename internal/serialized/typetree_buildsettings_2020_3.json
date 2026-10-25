@@ -1,0 +1,405 @@
+{
+"unity": "2020.3.49f1",
+"class_id": 141,
+"nodes": [
+{
+"level": 0,
+"type": "BuildSettings",
+"name": "Base",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 1,
+"type": "vector",
+"name": "scenes",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 2,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 49152
+},
+{
+"level": 3,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 3,
+"type": "string",
+"name": "data",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 4,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 16385
+},
+{
+"level": 5,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 1
+},
+{
+"level": 5,
+"type": "char",
+"name": "data",
+"byte_size": 1,
+"meta_flag": 1
+},
+{
+"level": 1,
+"type": "vector",
+"name": "preloadedPlugins",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 2,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 49152
+},
+{
+"level": 3,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 3,
+"type": "string",
+"name": "data",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 4,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 16385
+},
+{
+"level": 5,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 1
+},
+{
+"level": 5,
+"type": "char",
+"name": "data",
+"byte_size": 1,
+"meta_flag": 1
+},
+{
+"level": 1,
+"type": "vector",
+"name": "enabledVRDevices",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 2,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 49152
+},
+{
+"level": 3,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 3,
+"type": "string",
+"name": "data",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 4,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 16385
+},
+{
+"level": 5,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 1
+},
+{
+"level": 5,
+"type": "char",
+"name": "data",
+"byte_size": 1,
+"meta_flag": 1
+},
+{
+"level": 1,
+"type": "vector",
+"name": "buildTags",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 2,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 49152
+},
+{
+"level": 3,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 3,
+"type": "string",
+"name": "data",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 4,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 16385
+},
+{
+"level": 5,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 1
+},
+{
+"level": 5,
+"type": "char",
+"name": "data",
+"byte_size": 1,
+"meta_flag": 1
+},
+{
+"level": 1,
+"type": "GUID",
+"name": "buildGUID",
+"byte_size": 16,
+"meta_flag": 0
+},
+{
+"level": 2,
+"type": "unsigned int",
+"name": "data[0]",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 2,
+"type": "unsigned int",
+"name": "data[1]",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 2,
+"type": "unsigned int",
+"name": "data[2]",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 2,
+"type": "unsigned int",
+"name": "data[3]",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "hasPROVersion",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "isNoWatermarkBuild",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "isPrototypingBuild",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "isEducationalBuild",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "isEmbedded",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "isTrial",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "hasPublishingRights",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "hasShadows",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "hasSoftShadows",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "hasLocalLightShadows",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "hasAdvancedVersion",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "enableDynamicBatching",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "isDebugBuild",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "usesOnMouseEvents",
+"byte_size": 1,
+"meta_flag": 0
+},
+{
+"level": 1,
+"type": "bool",
+"name": "hasClusterRendering",
+"byte_size": 1,
+"meta_flag": 16384
+},
+{
+"level": 1,
+"type": "string",
+"name": "m_Version",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 2,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 16385
+},
+{
+"level": 3,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 1
+},
+{
+"level": 3,
+"type": "char",
+"name": "data",
+"byte_size": 1,
+"meta_flag": 1
+},
+{
+"level": 1,
+"type": "vector",
+"name": "m_GraphicsAPIs",
+"byte_size": -1,
+"meta_flag": 32768
+},
+{
+"level": 2,
+"type": "Array",
+"name": "Array",
+"byte_size": -1,
+"meta_flag": 16384
+},
+{
+"level": 3,
+"type": "int",
+"name": "size",
+"byte_size": 4,
+"meta_flag": 0
+},
+{
+"level": 3,
+"type": "int",
+"name": "data",
+"byte_size": 4,
+"meta_flag": 0
+}
+]
+}

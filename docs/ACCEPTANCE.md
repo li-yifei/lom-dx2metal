@@ -142,3 +142,33 @@ Player.log：Metal 设备初始化、Wwise 与 Steam 初始化成功，加载 Co
 `screenshot-window.png`：全新存档目录下游戏直接进了序章客栈（Story 场景，暂停菜单叠在上面），角色、背景、UI、文字完整，
 无黑屏、无发暗、无色带。由于全新 home 会自动开始序章，这次截到的是 Story 场景而不是标题画面。
 运行前后都没有其他 MortalARM64 进程。
+
+## 附加：globalgamemanagers 图形 API 改写（2026-10-25）
+
+`dx2metal convert` 默认把 `<in>/globalgamemanagers` 里 BuildSettings(ClassID 141) 的 `m_GraphicsAPIs` 改成 `[16]`（Metal）。
+BuildSettings 类型树同样从 UnityPy 导出内嵌（`internal/serialized/gen/export_buildsettings_typetree.py`）。
+
+```bash
+go test ./internal/serialized -run TestGraphicsAPIs -v
+go test ./core -run TestPatchGraphicsAPIs -v
+/Users/bob/lom-ws/tools/lom-arm64-converter/build/venv/bin/python tools/gen_gfx_oracle.py "<Steam 库>/LegendOfMortal/Mortal_Data" $R/oracle/gfx
+./bin/dx2metal convert --in $R/oracle/in --out $R/go-out2              # in/ 里需有 globalgamemanagers（gen_oracle.py 已会复制）
+./bin/dx2metal convert --in $R/oracle/in --out $R/go-out3 --keep-graphics-api
+./bin/dx2metal inspect $R/go-out2/globalgamemanagers
+```
+
+结果：
+
+- 原版 `globalgamemanagers`（420860 字节）：BuildSettings 按内嵌类型树读→写逐字节相等，整个文件往返逐字节相等。
+- 改写后 `[2] → [16]`，文件长度不变，与原版**只差 1 个字节**（偏移 187877，0x02→0x10）；读回为 `[16]`；再跑一次不再改动。
+- 与 Python 版比较：`tools/gen_gfx_oracle.py` 用 lom-arm64-converter 的 `assemble.patch_settings` 生成期望输出（418112 字节）。
+  18 个对象逐字节相同、元数据（类型表/外部引用）相同、数据区逐字节相同。文件字节不同的**全部原因**是 UnityPy 保存时重算了布局：
+  Unity 原文件把数据区起点放在 4096，UnityPy 改成按 16 对齐到 1344，并在末尾补 4 字节对齐；4096−1344−4 = 2748 正好是长度差
+  （测试里断言）。本工具保留 Unity 原布局，所以只改那 1 个字节。
+- `ports/arm64/build/MortalARM64.app` 里的 `globalgamemanagers`（418136 字节，已是 `[16]`）由 `ports/arm64/build_app.py` 生成，
+  它另外改了 PlayerSettings（companyName/productName/submitAnalytics/forceSingleInstance/resizableWindow），所以那 1 个对象不同；
+  其余 17 个对象（含 BuildSettings）与 Go 版逐字节相同，布局差异原因同上。
+- CLI 全量运行：日志 `globalgamemanagers：图形 API [2] → [16]`，audit `"graphics_apis": {"file": "globalgamemanagers", "before": [2], "after": [16], "written": true}`；
+  9 个 shader 资产文件与之前的输出逐字节相同。`--keep-graphics-api` 时输出目录里没有 `globalgamemanagers`，audit 无此项。
+  `inspect` 显示 `BuildSettings.m_GraphicsAPIs = [16]（Metal）`（原版显示 `[2]（Direct3D11）`）。
+- `go build ./... && go vet ./... && go test ./...` 全部通过（含 gui）。

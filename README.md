@@ -7,7 +7,7 @@
 
 这是玩家自制的非官方工具，和《活侠传》的开发商、Unity 都没有关系。转出来的包里带有游戏本体的文件，这些文件既不是我们的也不是你的，只能留在你自己的电脑上自己玩。千万别打包发给别人、传网盘或上传到任何地方；如果朋友想玩，请让他自己买游戏、自己动手转。
 
-仓库里只包含转换器源码，不附带任何游戏文件，也没有 Unity Player、Steam 或 Wwise 的库。想了解把游戏整体跑起来还需要准备哪些东西、具体怎么验证，可以查阅 [docs/ARTICLE.md](docs/ARTICLE.md)，或者参考那份可以直接贴给编码 agent 的 [docs/AGENT-BRIEF.md](docs/AGENT-BRIEF.md)。
+仓库里只包含转换器源码，不附带任何游戏文件，也没有 Unity Player、Steam 或 Wwise 的库。想了解把游戏整体跑起来还需要准备哪些东西、具体怎么验证，可以查阅 [docs/ARTICLE.md](docs/ARTICLE.md)（原理与验收标准）、[docs/RUNTIME-GUIDE.md](docs/RUNTIME-GUIDE.md)（自己动手拼装的分步指南），或者参考那份可以直接贴给编码 agent 的 [docs/AGENT-BRIEF.md](docs/AGENT-BRIEF.md)。
 
 ## 图形界面
 
@@ -43,6 +43,9 @@ bin/dx2metal verify out/Data/globalgamemanagers.assets
 ```
 
 - `--in` 目录永远只读；`--out` 必须指定，工具不做原地改写。输出目录里只会生成**改过的**资产文件（与 `--in` 下的相对路径相同）和 `dx2metal-audit.json`，转完后把它们覆盖到游戏 Data 的副本里即可。
+- `--in` 下有 `globalgamemanagers` 时，`convert` 会把其中 BuildSettings 的图形 API 列表改成只含 Metal（`m_GraphicsAPIs = [16]`，原版是 `[2]` Direct3D11），这样拼 .app 时不用再手工改，也不必靠 `-force-metal` 启动。
+  这一步只改一个字节，会把改好的 `globalgamemanagers` 一起写到输出目录并在 audit 里记录改前改后（列表已是 `[16]` 时不写）。
+  加 `--keep-graphics-api` 可关闭这一步，用 `bin/dx2metal inspect <Data>/globalgamemanagers` 可查看当前列表。
 - 默认会扫描 `Resources/unity_builtin_extra`、`*.assets`、`level*`、`StreamingAssets/**/*.bundle`，并且只处理仅带 D3D11 程序的 Shader。处理后的 bundle 会以 LZ4 重新打包。
 - 退出码说明：0 代表成功；2 代表输入错误；3 代表有 shader 完全没能转换（其余已正常输出，具体在 audit 中列明）；1 代表其他错误。
 - 在《活侠传》上的转换结果：共 102 个 shader / 2550 个程序 → 成功转换 2546 个，耗时约 8 秒。剩下的 4 个是给 VR/XR 用的程序，游戏本身不用。

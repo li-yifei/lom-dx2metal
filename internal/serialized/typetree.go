@@ -77,6 +77,11 @@ func buildTree(flat []flatNode) (*Node, error) {
 //go:embed typetree_shader_2020_3.json
 var shaderTreeJSON []byte
 
+// BuildSettings(ClassID 141) 的类型树同样从 UnityPy 导出（gen/export_buildsettings_typetree.py）。
+//
+//go:embed typetree_buildsettings_2020_3.json
+var buildSettingsTreeJSON []byte
+
 //go:embed common_strings.json
 var commonStringsJSON []byte
 
@@ -85,23 +90,34 @@ var (
 	shaderTree     *Node
 	shaderTreeErr  error
 
+	buildSettingsOnce sync.Once
+	buildSettingsTree *Node
+	buildSettingsErr  error
+
 	commonOnce    sync.Once
 	commonStrings map[uint32]string
 )
 
+func loadTree(b []byte) (*Node, error) {
+	var doc struct {
+		Nodes []flatNode `json:"nodes"`
+	}
+	if err := json.Unmarshal(b, &doc); err != nil {
+		return nil, err
+	}
+	return buildTree(doc.Nodes)
+}
+
 // ShaderTypeTree 返回内嵌的 Unity 2020.3 Shader(ClassID 48) 类型树。
 func ShaderTypeTree() (*Node, error) {
-	shaderTreeOnce.Do(func() {
-		var doc struct {
-			Nodes []flatNode `json:"nodes"`
-		}
-		if err := json.Unmarshal(shaderTreeJSON, &doc); err != nil {
-			shaderTreeErr = err
-			return
-		}
-		shaderTree, shaderTreeErr = buildTree(doc.Nodes)
-	})
+	shaderTreeOnce.Do(func() { shaderTree, shaderTreeErr = loadTree(shaderTreeJSON) })
 	return shaderTree, shaderTreeErr
+}
+
+// BuildSettingsTypeTree 返回内嵌的 Unity 2020.3 BuildSettings(ClassID 141) 类型树。
+func BuildSettingsTypeTree() (*Node, error) {
+	buildSettingsOnce.Do(func() { buildSettingsTree, buildSettingsErr = loadTree(buildSettingsTreeJSON) })
+	return buildSettingsTree, buildSettingsErr
 }
 
 func commonString(offset uint32) string {

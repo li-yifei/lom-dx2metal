@@ -14,6 +14,9 @@ type Options struct {
 	Jobs      int          // 并行 shader 数（<=0 时取 CPU 数）
 	AuditPath string       // audit JSON 路径（空 = <Out>/dx2metal-audit.json）
 	Log       func(string) // 普通日志（CLI 打到 stderr）；可为 nil
+	// KeepGraphicsAPI 为 true 时不改 globalgamemanagers 的 BuildSettings.m_GraphicsAPIs；
+	// 默认（false）改成只含 Metal（16）并把 globalgamemanagers 写到 Out。
+	KeepGraphicsAPI bool
 }
 
 // Event 是进度事件，与 lom_arm64/progress.py 的事件一一对应。
@@ -43,6 +46,9 @@ type Result struct {
 	Out           string   `json:"-"`
 	Audit         string   `json:"-"`
 	Failed        []string `json:"-"` // 有失败变体的 shader（"文件:path_id 名字"）
+	// globalgamemanagers 的图形 API：改前的列表（没处理时为 nil），以及这次是否改写并输出了 globalgamemanagers。
+	GraphicsBefore  []int `json:"-"`
+	GraphicsPatched bool  `json:"-"`
 }
 
 // Run 执行转换。
