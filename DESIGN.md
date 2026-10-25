@@ -162,3 +162,7 @@ oracle 目录由测试参数 `-oracle <dir>` 指定，默认 `/Users/bob/lom-ws/
 - 跳过项变成 4 个（XR 的 3 个程序 + XROcclusionMesh 1 个），GUIRoundedRect 现在能转。前文"×2"已过时。
 - `arm64-mods/` 放 BepInEx 在 Apple Silicon 上的补丁（LGPL，连源码），从 `lom-arm64-converter/vendor/bepinex-arm64` 复制，供文章与任务书引用。
 已知小问题：GUI 窗口在后台时不重绘，转换结束要激活窗口才显示结果；疑似 mygo 行为，未深究。
+
+更新 2026-10-25（夜）：目录重排，以 GUI 为主要交付物。`convert/` 改名 `core/`（公开 API 不变，只是包名 `convert`→`core`），
+`cmd/dx2metal-gui/` 升到顶层 `gui/`，`internal/` 留在根（`cmd/dx2metal` 的 inspect/verify 也要用）。根 go.mod 升到 go 1.27.1、
+合并为单 module，`GOTOOLCHAIN=auto` 自动取工具链，GUI 不再是子 module。本文前面的目录树与"cmd/dx2metal-gui"字样以此为准。

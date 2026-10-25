@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/li-yifei/lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/core"
 
-	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/gui/locales"
 )
 
 // stepDef 是 convert 命令的一个步骤，weight 是它在总进度条里的占比。
@@ -63,11 +63,11 @@ type run struct {
 	started   time.Time
 	finished  time.Time
 
-	log     []string // convert.Options.Log 的日志行
+	log     []string // core.Options.Log 的日志行
 	errors  []failure
-	input   bool           // Run 返回了 *convert.InputError
+	input   bool           // Run 返回了 *core.InputError
 	errMsg  string         // 最后一条 error 事件的消息，或 Run 返回的错误
-	res     convert.Result // Run 返回的汇总（出错时为零值）
+	res     core.Result // Run 返回的汇总（出错时为零值）
 	outcome outcome
 	cancel  bool // 用户请求取消
 	ended   bool
@@ -91,7 +91,7 @@ func stepIndex(id string) int {
 func (r *run) logLine(text string) { r.log = append(r.log, text) }
 
 // apply 处理一个进度事件。
-func (r *run) apply(ev convert.Event) {
+func (r *run) apply(ev core.Event) {
 	i := stepIndex(ev.Step)
 	switch ev.Kind {
 	case "step":
@@ -137,7 +137,7 @@ func (r *run) apply(ev convert.Event) {
 }
 
 // end 记录 Run 的返回并定结局：取消优先；有错误 = 失败；有 shader 失败 = 部分成功。
-func (r *run) end(res *convert.Result, err error) {
+func (r *run) end(res *core.Result, err error) {
 	r.ended, r.finished = true, time.Now()
 	if res != nil {
 		r.res = *res
@@ -148,7 +148,7 @@ func (r *run) end(res *convert.Result, err error) {
 	case err != nil:
 		r.outcome = outcomeFailed
 		r.errMsg = err.Error()
-		var ie *convert.InputError
+		var ie *core.InputError
 		r.input = errors.As(err, &ie)
 	case r.res.FailedShaders > 0: // 与 CLI 的退出码 3 一致；Failed 里还含只删了变体的 shader，不算失败
 		r.outcome = outcomePartial

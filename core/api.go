@@ -1,9 +1,9 @@
 // Package convert 是 lom-dx2metal 的公开 Go API：把 Unity 2020.3 D3D11 着色器转成 Metal 并写出资产文件。
-// CLI（cmd/dx2metal）与 GUI（cmd/dx2metal-gui）都只调用 Run。
+// CLI（cmd/dx2metal）与 GUI（gui/）都只调用 Run。
 //
 // Run 不依赖进程级全局状态，可在 goroutine 里运行、同一进程多次调用；ctx 取消即中止；
 // 单个程序的失败只记入 audit，不 panic。
-package convert
+package core
 
 import "context"
 

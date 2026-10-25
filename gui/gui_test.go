@@ -14,7 +14,7 @@ import (
 	"github.com/egoist/mygo/i18n"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/li-yifei/lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/core"
 )
 
 // fakeData 造一个合格的 *_Data 目录。
@@ -87,19 +87,19 @@ func TestOutput(t *testing.T) {
 	}
 }
 
-func step(step, state string) convert.Event {
-	return convert.Event{Kind: "step", Step: step, State: state}
+func step(step, state string) core.Event {
+	return core.Event{Kind: "step", Step: step, State: state}
 }
 
-func progress(cur, total int, detail string) convert.Event {
-	return convert.Event{Kind: "progress", Step: "convert", Current: cur, Total: total, Unit: "programs", Detail: detail}
+func progress(cur, total int, detail string) core.Event {
+	return core.Event{Kind: "progress", Step: "convert", Current: cur, Total: total, Unit: "programs", Detail: detail}
 }
 
 // 回放一段事件，覆盖步骤、进度、计数。
 func TestReplay(t *testing.T) {
 	withLocale(t, "zh-Hans")
 	r := newRun()
-	for _, ev := range []convert.Event{
+	for _, ev := range []core.Event{
 		step("scan", "start"), step("scan", "done"), step("convert", "start"),
 		progress(50, 200, "Hidden/Foo"),
 		{Kind: "error", Step: "convert", Detail: "Bar", Message: "boom"},
@@ -119,7 +119,7 @@ func TestReplay(t *testing.T) {
 	if got := r.overall(); got < 0.29 || got > 0.31 { // (10 + 80*0.25)/100
 		t.Errorf("总进度 %v", got)
 	}
-	r.apply(convert.Event{Kind: "progress", Step: "write", Current: 1, Total: 2}) // 非当前步骤
+	r.apply(core.Event{Kind: "progress", Step: "write", Current: 1, Total: 2}) // 非当前步骤
 	if r.fraction != 0.25 {
 		t.Error("非当前步骤的进度不应生效")
 	}
@@ -131,11 +131,11 @@ func TestReplay(t *testing.T) {
 
 func TestOutcomes(t *testing.T) {
 	withLocale(t, "zh-Hans")
-	ok := &convert.Result{Shaders: 10, Programs: 100, Converted: 100}
-	partial := &convert.Result{Shaders: 10, Programs: 100, Converted: 97, Removed: 3, FailedShaders: 2, Failed: []string{"a:1 A", "b:2 B"}}
+	ok := &core.Result{Shaders: 10, Programs: 100, Converted: 100}
+	partial := &core.Result{Shaders: 10, Programs: 100, Converted: 97, Removed: 3, FailedShaders: 2, Failed: []string{"a:1 A", "b:2 B"}}
 	cases := []struct {
 		name    string
-		res     *convert.Result
+		res     *core.Result
 		err     error
 		cancel  bool
 		want    outcome
@@ -169,7 +169,7 @@ func TestOutcomes(t *testing.T) {
 		t.Errorf("失败列表 %+v", got)
 	}
 	r = newRun()
-	r.apply(convert.Event{Kind: "error", Step: "convert", Detail: "E", Message: "m"})
+	r.apply(core.Event{Kind: "error", Step: "convert", Detail: "E", Message: "m"})
 	r.end(partial, nil)
 	r.res.Failed = nil // Result 没给列表时退回 error 事件
 	if got := r.failedList(); len(got) != 1 || got[0].Name != "E" {
@@ -188,13 +188,13 @@ func TestETA(t *testing.T) {
 }
 
 // runFake 经 execute 用假 runner 跑完一次，事件与完成都经 post 串行回主线程（这里用互斥量代替）。
-func runFake(t *testing.T, rn runner) (*run, convert.Options) {
+func runFake(t *testing.T, rn runner) (*run, core.Options) {
 	t.Helper()
 	var mu sync.Mutex
 	post := func(f func()) { mu.Lock(); defer mu.Unlock(); f() }
 	r := newRun()
 	done := make(chan struct{})
-	opt := convert.Options{In: fakeData(t), Out: filepath.Join(t.TempDir(), "out")}
+	opt := core.Options{In: fakeData(t), Out: filepath.Join(t.TempDir(), "out")}
 	execute(context.Background(), rn, opt, r, post, func() { close(done) })
 	select {
 	case <-done:
@@ -236,7 +236,7 @@ func TestCancel(t *testing.T) {
 	r := newRun()
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan struct{})
-	execute(ctx, fakeRunner{Programs: 1000, Delay: 50 * time.Millisecond}, convert.Options{In: fakeData(t), Out: t.TempDir()}, r, post, func() { close(done) })
+	execute(ctx, fakeRunner{Programs: 1000, Delay: 50 * time.Millisecond}, core.Options{In: fakeData(t), Out: t.TempDir()}, r, post, func() { close(done) })
 	time.Sleep(200 * time.Millisecond)
 	mu.Lock()
 	r.cancel = true // 与 gui.cancel 一致：先标记再取消 ctx
@@ -307,7 +307,7 @@ func TestViews(t *testing.T) {
 
 			// 进行中
 			g.phase, g.run, g.logOpen = phaseRunning, newRun(), true
-			for _, ev := range []convert.Event{
+			for _, ev := range []core.Event{
 				step("scan", "start"), step("scan", "done"), step("convert", "start"),
 				progress(1204, 2550, "Hidden/Universal Render Pipeline/Bloom"),
 				{Kind: "error", Step: "convert", Detail: "Hidden/VideoComposite", Message: "Metal 编译失败"},
@@ -325,12 +325,12 @@ func TestViews(t *testing.T) {
 			audit := filepath.Join(out, "dx2metal-audit.json")
 			must(t, os.WriteFile(audit, []byte("{}"), 0o644))
 			for _, c := range []struct {
-				res  convert.Result
+				res  core.Result
 				want string
 				name string
 			}{
-				{convert.Result{Shaders: 102, Programs: 2550, Converted: 2550, Out: out, Audit: audit}, lang.done, "4-done"},
-				{convert.Result{Shaders: 102, Programs: 2550, Converted: 2544, Removed: 6, FailedShaders: 2, Out: out, Audit: audit,
+				{core.Result{Shaders: 102, Programs: 2550, Converted: 2550, Out: out, Audit: audit}, lang.done, "4-done"},
+				{core.Result{Shaders: 102, Programs: 2550, Converted: 2544, Removed: 6, FailedShaders: 2, Out: out, Audit: audit,
 					Failed: []string{"unity_builtin_extra:1234 Hidden/VideoComposite", "globalgamemanagers.assets:77 XR/RTAI"}}, lang.partial, "4b-partial"},
 			} {
 				g.run = newRun()
@@ -351,7 +351,7 @@ func TestViews(t *testing.T) {
 			g.run, g.phase = newRun(), phaseFailed
 			g.run.apply(step("convert", "start"))
 			g.run.logLine("panic: fake internal error")
-			g.run.apply(convert.Event{Kind: "error", Step: "convert", Message: "HLSLcc 崩溃"})
+			g.run.apply(core.Event{Kind: "error", Step: "convert", Message: "HLSLcc 崩溃"})
 			g.run.end(nil, errors.New("HLSLcc 崩溃"))
 			tt.Frame()
 			if !tt.HasText(lang.failed) {
@@ -362,7 +362,7 @@ func TestViews(t *testing.T) {
 	}
 }
 
-// 输入有问题时 convert.Run 返回 *convert.InputError，界面给友好提示而不是裸错误。
+// 输入有问题时 core.Run 返回 *core.InputError，界面给友好提示而不是裸错误。
 func TestInputError(t *testing.T) {
 	withLocale(t, "zh-Hans")
 	r, _ := runFake(t, realRunner{}) // fakeData 里没有真正的资产，Run 会拒绝它或报错
@@ -370,7 +370,7 @@ func TestInputError(t *testing.T) {
 		t.Fatalf("结局 %v", r.outcome)
 	}
 	r = newRun()
-	_, err := convert.Run(context.Background(), convert.Options{In: filepath.Join(t.TempDir(), "不存在"), Out: t.TempDir()}, nil)
+	_, err := core.Run(context.Background(), core.Options{In: filepath.Join(t.TempDir(), "不存在"), Out: t.TempDir()}, nil)
 	r.end(nil, err)
 	if !r.input || !strings.Contains(r.errorText(), "请确认拖入的是未经修改") {
 		t.Errorf("input=%v 文本 %q（err=%v）", r.input, r.errorText(), err)

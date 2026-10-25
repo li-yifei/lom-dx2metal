@@ -3,5 +3,5 @@ build/
 .runs-dir
 .gopath/
 .gocache/
-cmd/dx2metal-gui/build/
+gui/build/
 *.app

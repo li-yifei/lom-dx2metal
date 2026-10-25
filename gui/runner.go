@@ -8,29 +8,29 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/li-yifei/lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/core"
 
-	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/gui/locales"
 )
 
-// runner 隔离对转换包的调用：正式用 convert.Run，测试与截图用假的。
+// runner 隔离对转换包的调用：正式用 core.Run，测试与截图用假的。
 type runner interface {
-	Run(ctx context.Context, opt convert.Options, onEvent func(convert.Event)) (*convert.Result, error)
+	Run(ctx context.Context, opt core.Options, onEvent func(core.Event)) (*core.Result, error)
 }
 
-// realRunner 进程内调用 convert.Run，不起子进程、不经过 JSON。
+// realRunner 进程内调用 core.Run，不起子进程、不经过 JSON。
 type realRunner struct{}
 
-func (realRunner) Run(ctx context.Context, opt convert.Options, onEvent func(convert.Event)) (*convert.Result, error) {
-	return convert.Run(ctx, opt, onEvent)
+func (realRunner) Run(ctx context.Context, opt core.Options, onEvent func(core.Event)) (*core.Result, error) {
+	return core.Run(ctx, opt, onEvent)
 }
 
 // execute 在新 goroutine 里运行一次转换。onEvent 与 opt.Log 在工作 goroutine 调用，
 // 这里统一经 post 切回 UI 线程再改 r；Run 返回后用 post 调 onDone。post 必须按调用顺序执行。
-func execute(ctx context.Context, rn runner, opt convert.Options, r *run, post func(func()), onDone func()) {
+func execute(ctx context.Context, rn runner, opt core.Options, r *run, post func(func()), onDone func()) {
 	opt.Log = func(line string) { post(func() { r.logLine(line) }) }
 	go func() {
-		res, err := rn.Run(ctx, opt, func(ev convert.Event) { post(func() { r.apply(ev) }) })
+		res, err := rn.Run(ctx, opt, func(ev core.Event) { post(func() { r.apply(ev) }) })
 		post(func() {
 			r.end(res, err)
 			onDone()
@@ -55,7 +55,7 @@ var fakeShaders = []string{
 	"LOM/Character/Skin", "LOM/Character/Hair", "LOM/Scene/Water", "Spine/Skeleton",
 }
 
-func (f fakeRunner) Run(ctx context.Context, opt convert.Options, onEvent func(convert.Event)) (*convert.Result, error) {
+func (f fakeRunner) Run(ctx context.Context, opt core.Options, onEvent func(core.Event)) (*core.Result, error) {
 	total := f.Programs
 	if total == 0 {
 		total = 120
@@ -73,27 +73,27 @@ func (f fakeRunner) Run(ctx context.Context, opt convert.Options, onEvent func(c
 			opt.Log(fmt.Sprintf(format, a...))
 		}
 	}
-	onEvent(convert.Event{Kind: "step", Step: "scan", State: "start", Title: "扫描资产"})
+	onEvent(core.Event{Kind: "step", Step: "scan", State: "start", Title: "扫描资产"})
 	logf("扫描 %s", opt.In)
 	if err := nap(); err != nil {
 		return nil, err
 	}
-	onEvent(convert.Event{Kind: "step", Step: "scan", State: "done", Seconds: 0.4})
-	onEvent(convert.Event{Kind: "step", Step: "convert", State: "start", Title: "转换着色器"})
+	onEvent(core.Event{Kind: "step", Step: "scan", State: "done", Seconds: 0.4})
+	onEvent(core.Event{Kind: "step", Step: "convert", State: "start", Title: "转换着色器"})
 	for i := 0; i <= total; i++ {
 		name := fakeShaders[i%len(fakeShaders)]
-		onEvent(convert.Event{Kind: "progress", Step: "convert", Current: i, Total: total, Unit: "programs", Detail: name})
+		onEvent(core.Event{Kind: "progress", Step: "convert", Current: i, Total: total, Unit: "programs", Detail: name})
 		if i > 0 && i%7 == 0 {
 			logf("  %s: vs/fs 配对 %d 完成", name, i)
 		}
 		if f.Err != nil && i == total/2 {
-			onEvent(convert.Event{Kind: "error", Step: "convert", Message: f.Err.Error()})
+			onEvent(core.Event{Kind: "error", Step: "convert", Message: f.Err.Error()})
 			logf("panic: %v", f.Err)
 			return nil, f.Err
 		}
 		for k, failed := range f.Failed {
 			if i == (k+1)*total/(len(f.Failed)+1) {
-				onEvent(convert.Event{Kind: "error", Step: "convert", Detail: failed, Message: "Metal 编译失败，变体已删除"})
+				onEvent(core.Event{Kind: "error", Step: "convert", Detail: failed, Message: "Metal 编译失败，变体已删除"})
 				logf("  WARN %s: Metal 编译失败，变体已删除", failed)
 			}
 		}
@@ -101,18 +101,18 @@ func (f fakeRunner) Run(ctx context.Context, opt convert.Options, onEvent func(c
 			return nil, err
 		}
 	}
-	onEvent(convert.Event{Kind: "step", Step: "convert", State: "done", Seconds: 5.2})
-	onEvent(convert.Event{Kind: "step", Step: "write", State: "start", Title: "写出资产"})
+	onEvent(core.Event{Kind: "step", Step: "convert", State: "done", Seconds: 5.2})
+	onEvent(core.Event{Kind: "step", Step: "write", State: "start", Title: "写出资产"})
 	if err := nap(); err != nil {
 		return nil, err
 	}
-	onEvent(convert.Event{Kind: "step", Step: "write", State: "done", Seconds: 0.3})
-	res := &convert.Result{Shaders: len(fakeShaders), Programs: total, Converted: total - f.Removed, Removed: f.Removed,
+	onEvent(core.Event{Kind: "step", Step: "write", State: "done", Seconds: 0.3})
+	res := &core.Result{Shaders: len(fakeShaders), Programs: total, Converted: total - f.Removed, Removed: f.Removed,
 		FailedShaders: len(f.Failed), Out: opt.Out, Audit: opt.AuditPath, Failed: f.Failed}
 	if res.Audit == "" {
 		res.Audit = opt.Out + "/dx2metal-audit.json"
 	}
-	onEvent(convert.Event{Kind: "result", OK: len(f.Failed) == 0, Result: res})
+	onEvent(core.Event{Kind: "result", OK: len(f.Failed) == 0, Result: res})
 	return res, nil
 }
 

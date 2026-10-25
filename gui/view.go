@@ -13,9 +13,9 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/li-yifei/lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/core"
 
-	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/gui/locales"
 )
 
 type phase int
@@ -467,7 +467,7 @@ func (g *gui) start() {
 	g.run, g.phase, g.notice, g.logOpen = r, phaseRunning, nil, false
 	ctx, cancel := context.WithCancel(context.Background())
 	g.cancelRun = cancel
-	execute(ctx, g.rn, convert.Options{In: g.input.Path, Out: g.outPath}, r, g.post, func() {
+	execute(ctx, g.rn, core.Options{In: g.input.Path, Out: g.outPath}, r, g.post, func() {
 		cancel()
 		switch r.outcome {
 		case outcomeOK, outcomePartial:

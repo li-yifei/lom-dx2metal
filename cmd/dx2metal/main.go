@@ -1,6 +1,6 @@
 // dx2metal：把 Unity 2020.3 Windows 构建的 D3D11 着色器离线转成 Metal 并写出资产文件。
 //
-// 本命令只是公开包 convert 的薄包装；--progress-json 时把 convert.Event 编成与
+// 本命令只是公开包 convert 的薄包装；--progress-json 时把 core.Event 编成与
 // lom_arm64/progress.py 相同的 JSON 行写到 stdout，普通日志走 stderr。
 package main
 
@@ -16,7 +16,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/li-yifei/lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/core"
 	"github.com/li-yifei/lom-dx2metal/internal/serialized"
 	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
@@ -65,7 +65,7 @@ func (m *multi) Set(v string) error { *m = append(*m, v); return nil }
 
 func cmdConvert(args []string) int {
 	fs := flag.NewFlagSet("convert", flag.ContinueOnError)
-	var opt convert.Options
+	var opt core.Options
 	var only multi
 	progress := fs.Bool("progress-json", false, "stdout 输出 JSON 进度事件")
 	fs.StringVar(&opt.In, "in", "", "Data 目录或单个资产文件（只读）")
@@ -80,16 +80,16 @@ func cmdConvert(args []string) int {
 	opt.Log = func(s string) { fmt.Fprintln(os.Stderr, s) }
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
-	var on func(convert.Event)
+	var on func(core.Event)
 	if *progress {
-		on = func(e convert.Event) {
+		on = func(e core.Event) {
 			os.Stdout.Write(encodeEvent(e, opt))
 		}
 	}
-	res, err := convert.Run(ctx, opt, on)
+	res, err := core.Run(ctx, opt, on)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "错误：", err)
-		var ie *convert.InputError
+		var ie *core.InputError
 		if errors.As(err, &ie) {
 			return 2
 		}
@@ -136,7 +136,7 @@ func pyJSON(fields []kv) []byte {
 }
 
 // encodeEvent 把事件编成一行 {"lom": 1, ...}，字段顺序与 progress.py 相同。
-func encodeEvent(e convert.Event, opt convert.Options) []byte {
+func encodeEvent(e core.Event, opt core.Options) []byte {
 	f := []kv{{"lom", 1}, {"event", e.Kind}}
 	switch e.Kind {
 	case "step":

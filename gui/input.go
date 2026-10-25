@@ -9,7 +9,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/gui/locales"
 )
 
 // inputDir 是对拖入文件夹的检查结果。

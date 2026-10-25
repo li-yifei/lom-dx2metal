@@ -1,7 +1,7 @@
-// 命令 dx2metal-gui 是 dx2metal 的拖放界面：拖入游戏的 *_Data 文件夹，
+// 包 gui 是 dx2metal 的拖放界面（主要交付物）：拖入游戏的 *_Data 文件夹，
 // 得到 D3D11 → Metal 转换后的资产目录。
 //
-// GUI 与 CLI 同属一个 module，进程内直接调用 convert.Run（在 goroutine 里），
+// GUI 与 CLI 同属一个 module，进程内直接调用 core.Run（在 goroutine 里），
 // 进度事件经 onEvent 切回 UI 线程；取消 = 取消 ctx。不起子进程，不经过 JSON。
 package main
 
@@ -12,7 +12,7 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/gui/locales"
 )
 
 func main() {

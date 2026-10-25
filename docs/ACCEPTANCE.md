@@ -25,14 +25,14 @@ mkdir -p $R && echo $R > .runs-dir
 ## 构建与全部测试
 
 ```bash
-go build ./cmd/dx2metal ./convert ./internal/...
-go test ./convert ./cmd/dx2metal ./internal/...
+go build ./cmd/dx2metal ./core ./internal/...
+go test ./core ./cmd/dx2metal ./internal/...
 ```
 
 结果（2026-10-25 13:3x）：
 
 ```
-ok   lom-dx2metal/convert            13.6s
+ok   lom-dx2metal/core            13.6s
 ok   lom-dx2metal/internal/hlslcc
 ok   lom-dx2metal/internal/metal
 ok   lom-dx2metal/internal/params
@@ -40,8 +40,8 @@ ok   lom-dx2metal/internal/serialized
 ok   lom-dx2metal/internal/shaderblob
 ```
 
-注：同一 module 里 GUI 会话正在写的 `cmd/dx2metal-gui` 目前缺 mygo 依赖，`go build ./...` 会在它那里报错；
-本会话负责的包全部通过。
+注：2026-10-25 晚目录重排（`convert/`→`core/`、`cmd/dx2metal-gui/`→`gui/`）并合并为单 module（go 1.27.1）后，
+根目录 `go build ./... && go vet ./... && go test ./...` 全部通过，GUI 一并构建。
 
 ## 验收 1：tail 往返
 
@@ -78,13 +78,13 @@ go test ./internal/serialized -v
 ## 验收 3：MSL 对齐
 
 ```bash
-go test ./convert -run TestMSLMatchesPython -v
+go test ./core -run TestMSLMatchesPython -v
 ```
 
 结果：`102 个 shader，2417/2417 个 .metal 逐字节相等`（同一份 HLSLcc 源码 cgo 静态链接、同样 flags `0xB0000`、同样的重排）。
 Python 工作目录按 shader 名分目录、同名 shader 后处理的覆盖先处理的，测试按同样顺序生成并覆盖再比较。
 
-参考信息（不判失败）：`go test ./convert -run TestLegacyOracleReport -v` 与旧 oracle 比较——
+参考信息（不判失败）：`go test ./core -run TestLegacyOracleReport -v` 与旧 oracle 比较——
 `metal-bulk/` 1068/2452 相同、titlediag blob（bulk-audit 范围）1069/2454 相同；不同的全部是含内联采样器的 shader
 （UberPost ×1280、Bloom、DoF、SMAA、StencilDeferred、MotionBlur、Panini、StopNaN、XRMirrorView、UIRDefault…，
 即根因三修复带来的 constexpr sampler 差异），加上 GUIRoundedRect / GUIRoundedRectWithColorPerBorder（数组步长修复）
@@ -93,7 +93,7 @@ Python 工作目录按 shader 名分目录、同名 shader 后处理的覆盖先
 ## 验收 4：blob 对齐
 
 ```bash
-go test ./convert -run TestBlobsMatchPython -v
+go test ./core -run TestBlobsMatchPython -v
 ```
 
 在内存里转换 `oracle/in` 的每个 D3D11 Shader，与 Python 版输出 `oracle/out` 比较：

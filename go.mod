@@ -1,8 +1,19 @@
 module github.com/li-yifei/lom-dx2metal
 
-go 1.26
+go 1.27.1
+
+tool github.com/egoist/mygo/cmd/mygo
 
 require (
-	github.com/pierrec/lz4/v4 v4.1.33 // indirect
-	github.com/ulikunitz/xz v0.5.17 // indirect
+	github.com/egoist/mygo v0.6.3
+	github.com/pierrec/lz4/v4 v4.1.33
+	github.com/ulikunitz/xz v0.5.17
+)
+
+require (
+	github.com/ebitengine/purego v0.11.1 // indirect
+	github.com/go-text/typesetting v0.3.5 // indirect
+	golang.org/x/image v0.46.0 // indirect
+	golang.org/x/net v0.59.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 )
