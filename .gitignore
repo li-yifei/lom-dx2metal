@@ -1,0 +1,7 @@
+bin/
+build/
+.runs-dir
+.gopath/
+.gocache/
+cmd/dx2metal-gui/build/
+*.app

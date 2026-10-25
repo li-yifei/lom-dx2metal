@@ -1,0 +1,234 @@
+{
+  "@@locale": "ja",
+  "mygo.appName": "dx2metal GUI",
+  "appTitle": "dx2metal シェーダー変換ツール",
+  "headerTitle": "dx2metal · D3D11 → Metal シェーダー変換",
+  "headerSubtitle": "Unity 2020.3 ゲームの *_Data にある D3D11 シェーダーを Metal にオフライン変換します。入力フォルダは読み取り専用で、結果は別の出力フォルダに書き込まれます。",
+  "dropTitle": "ゲームの *_Data フォルダーをここにドロップ",
+  "dropHint": "例：Mortal_Data（globalgamemanagers と Resources/unity_builtin_extra が必要）",
+  "dropInvalid": "このフォルダーは変換できません",
+  "dropValid": "入力フォルダーは有効です",
+  "dropSizing": "サイズを計算中…",
+  "dropSize": "入力フォルダーのサイズは約 {size}。出力も同程度のディスク容量を使う見込みです",
+  "@dropSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseFolder": "フォルダーを選択…",
+  "chooseFolderTitle": "ゲームの *_Data フォルダーを選択",
+  "gameUnreadable": "この場所を読み取れません：{error}",
+  "@gameUnreadable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "gameNotFolder": "フォルダーではありません。ゲームの *_Data フォルダーをドロップしてください。",
+  "gameNoGGM": "globalgamemanagers がありません。Unity ゲームの *_Data フォルダーではないようです。",
+  "gameNoBuiltin": "Resources/unity_builtin_extra がなく、内蔵シェーダーを特定できません。",
+  "output": "出力フォルダー",
+  "change": "変更…",
+  "outputTitle": "出力フォルダーを選択",
+  "outputInside": "出力フォルダーは入力フォルダーの中に置けません。",
+  "outputSame": "出力フォルダーを入力フォルダーと同じにはできません。",
+  "diskLow": "出力先のディスク空き容量は {free} で、足りない可能性があります（約 {need} 必要）。",
+  "@diskLow": {
+    "placeholders": {
+      "free": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "start": "変換を開始",
+  "cancel": "キャンセル",
+  "stepScan": "アセットをスキャン",
+  "stepConvert": "シェーダーを変換",
+  "stepWrite": "アセットを書き出し",
+  "overall": "全体の進捗",
+  "converting": "{name} を変換中",
+  "@converting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "currentShader": "処理中のシェーダー：{name}",
+  "@currentShader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "counts": "処理済み {done} / {total} プログラム · 失敗 {failed}",
+  "@counts": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "elapsed": "経過 {time}",
+  "@elapsed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eta": "この工程の残り目安 {time}",
+  "@eta": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "seconds": "{s} 秒",
+  "@seconds": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{m} 分 {s} 秒",
+  "@minutes": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      },
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "liveLog": "ログ（{lines} 行）",
+  "@liveLog": {
+    "placeholders": {
+      "lines": {
+        "type": "int"
+      }
+    }
+  },
+  "doneTitle": "変換が完了しました",
+  "partialTitle": "一部成功：変換に失敗したシェーダーがあります",
+  "partialHint": "残りのシェーダーは出力済みです。失敗した項目は下の一覧と audit JSON を参照してください。失敗したバリアントはアセットから削除されているため、該当マテリアルの表示が崩れる場合があります。",
+  "statConverted": "変換成功 {n} プログラム",
+  "@statConverted": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statRemoved": "削除したバリアント {n}",
+  "@statRemoved": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statFailed": "失敗したシェーダー {n}",
+  "@statFailed": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statShaders": "シェーダー計 {n}",
+  "@statShaders": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statTime": "所要時間 {time}",
+  "@statTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "failedList": "失敗したシェーダー（{n}）",
+  "@failedList": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "failedMore": "… ほか {n} 件は audit JSON を参照",
+  "@failedMore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "failedTitle": "変換に失敗しました",
+  "failedAt": "変換に失敗：{step}",
+  "@failedAt": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "failedUnknown": "変換が中断されました。理由は示されていません。ログを参照してください。",
+  "inputProblem": "入力に問題があります：{message}\n未改変のゲームの *_Data フォルダーか確認してください。",
+  "@inputProblem": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "logTail": "ログの末尾",
+  "copyLog": "ログをコピー",
+  "copied": "コピーしました",
+  "openOutput": "出力フォルダーを開く",
+  "openAudit": "audit JSON を開く",
+  "convertAnother": "別のゲームを変換",
+  "back": "戻る",
+  "retry": "再試行",
+  "replaceTitle": "出力フォルダー「{name}」には既に内容があります",
+  "@replaceTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "replaceDetail": "続行すると同名のアセットファイルが上書きされます。その他のファイルはそのままです。",
+  "replace": "続行",
+  "cancelled": "キャンセルしました。出力フォルダーに不完全なファイルが残っている場合があります。",
+  "mkdirFailed": "出力フォルダーを作成できません：{error}",
+  "@mkdirFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "disclaimerUnofficial": "非公式ツールです。『活侠伝』および Unity の権利者とは無関係です。",
+  "disclaimerNoShare": "変換結果を配布しないでください。出力にはゲームのアセットが含まれ、著作権は権利者に帰属します。ご自身が購入した正規版をこのマシンで使うためだけのものです。"
+}

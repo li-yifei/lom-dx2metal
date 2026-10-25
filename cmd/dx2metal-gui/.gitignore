@@ -1,0 +1,10 @@
+/build/
+/.mygo/
+/.gopath/
+/.gocache/
+/resources/converter/
+/test-out/
+mygo_windows_*.syso
+/screenshots/tester/
+/.gopath/
+/.gocache/

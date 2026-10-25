@@ -1,0 +1,234 @@
+{
+  "@@locale": "zh-Hant",
+  "mygo.appName": "dx2metal GUI",
+  "appTitle": "dx2metal 著色器轉換器",
+  "headerTitle": "dx2metal · D3D11 → Metal 著色器轉換",
+  "headerSubtitle": "把 Unity 2020.3 遊戲 *_Data 裡的 D3D11 著色器離線轉成 Metal。輸入資料夾唯讀，結果寫入單獨的輸出資料夾。",
+  "dropTitle": "把遊戲的 *_Data 資料夾拖到這裡",
+  "dropHint": "例如 Mortal_Data（需包含 globalgamemanagers 與 Resources/unity_builtin_extra）",
+  "dropInvalid": "這個資料夾不能轉換",
+  "dropValid": "輸入資料夾有效",
+  "dropSizing": "正在計算大小…",
+  "dropSize": "輸入資料夾大小約 {size}，輸出預計佔用相近的磁碟空間",
+  "@dropSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseFolder": "選擇資料夾…",
+  "chooseFolderTitle": "選擇遊戲的 *_Data 資料夾",
+  "gameUnreadable": "無法讀取這個位置：{error}",
+  "@gameUnreadable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "gameNotFolder": "這不是資料夾，請拖入遊戲的 *_Data 資料夾。",
+  "gameNoGGM": "裡面沒有 globalgamemanagers，不是 Unity 遊戲的 *_Data 資料夾。",
+  "gameNoBuiltin": "裡面沒有 Resources/unity_builtin_extra，無法定位內建著色器。",
+  "output": "輸出資料夾",
+  "change": "更改…",
+  "outputTitle": "選擇輸出資料夾",
+  "outputInside": "輸出資料夾不能放在輸入資料夾之內。",
+  "outputSame": "輸出資料夾不能與輸入資料夾相同。",
+  "diskLow": "輸出位置所在磁碟剩餘 {free}，可能不夠（約需 {need}）。",
+  "@diskLow": {
+    "placeholders": {
+      "free": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "start": "開始轉換",
+  "cancel": "取消",
+  "stepScan": "掃描資產",
+  "stepConvert": "轉換著色器",
+  "stepWrite": "寫出資產",
+  "overall": "總進度",
+  "converting": "正在轉換 {name}",
+  "@converting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "currentShader": "目前 shader：{name}",
+  "@currentShader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "counts": "已處理 {done} / {total} 個程式 · 失敗 {failed}",
+  "@counts": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "elapsed": "已用時 {time}",
+  "@elapsed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eta": "本步預計還需 {time}",
+  "@eta": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "seconds": "{s} 秒",
+  "@seconds": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{m} 分 {s} 秒",
+  "@minutes": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      },
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "liveLog": "日誌（{lines} 行）",
+  "@liveLog": {
+    "placeholders": {
+      "lines": {
+        "type": "int"
+      }
+    }
+  },
+  "doneTitle": "轉換完成",
+  "partialTitle": "部分成功：有 shader 轉換失敗",
+  "partialHint": "其餘 shader 已正常輸出；失敗項見下表與 audit JSON。失敗的變體已從資產中移除，遊戲裡對應材質可能顯示異常。",
+  "statConverted": "成功轉換 {n} 個程式",
+  "@statConverted": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statRemoved": "刪除變體 {n} 個",
+  "@statRemoved": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statFailed": "失敗 shader {n} 個",
+  "@statFailed": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statShaders": "共 {n} 個 shader",
+  "@statShaders": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statTime": "用時 {time}",
+  "@statTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "failedList": "失敗的 shader（{n}）",
+  "@failedList": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "failedMore": "… 另有 {n} 項，見 audit JSON",
+  "@failedMore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "failedTitle": "轉換失敗",
+  "failedAt": "轉換失敗：{step}",
+  "@failedAt": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "failedUnknown": "轉換中止，沒有給出原因，詳情見日誌。",
+  "inputProblem": "輸入有誤：{message}\n請確認拖入的是未經修改的遊戲 *_Data 資料夾。",
+  "@inputProblem": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "logTail": "日誌末尾",
+  "copyLog": "複製日誌",
+  "copied": "已複製",
+  "openOutput": "開啟輸出資料夾",
+  "openAudit": "開啟 audit JSON",
+  "convertAnother": "轉換另一個",
+  "back": "返回",
+  "retry": "重試",
+  "replaceTitle": "輸出資料夾「{name}」已有內容",
+  "@replaceTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "replaceDetail": "繼續會覆蓋其中同名的資產檔案，其他檔案保持不動。",
+  "replace": "繼續",
+  "cancelled": "已取消。輸出資料夾裡可能留有不完整的檔案。",
+  "mkdirFailed": "無法建立輸出資料夾：{error}",
+  "@mkdirFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "disclaimerUnofficial": "非官方工具，與《活俠傳》及 Unity 的權利人無關。",
+  "disclaimerNoShare": "請勿散布轉換結果：輸出裡含有遊戲資產，版權歸原權利人所有，僅供你自己的正版遊戲在本機使用。"
+}

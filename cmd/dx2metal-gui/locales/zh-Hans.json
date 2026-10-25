@@ -1,0 +1,234 @@
+{
+  "@@locale": "zh-Hans",
+  "mygo.appName": "dx2metal GUI",
+  "appTitle": "dx2metal 着色器转换器",
+  "headerTitle": "dx2metal · D3D11 → Metal 着色器转换",
+  "headerSubtitle": "把 Unity 2020.3 游戏 *_Data 里的 D3D11 着色器离线转成 Metal。输入目录只读，结果写入单独的输出目录。",
+  "dropTitle": "把游戏的 *_Data 文件夹拖到这里",
+  "dropHint": "例如 Mortal_Data（需包含 globalgamemanagers 与 Resources/unity_builtin_extra）",
+  "dropInvalid": "这个目录不能转换",
+  "dropValid": "输入目录有效",
+  "dropSizing": "正在计算大小…",
+  "dropSize": "输入目录大小约 {size}，输出预计占用相近的磁盘空间",
+  "@dropSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseFolder": "选择文件夹…",
+  "chooseFolderTitle": "选择游戏的 *_Data 文件夹",
+  "gameUnreadable": "无法读取这个位置：{error}",
+  "@gameUnreadable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "gameNotFolder": "这不是文件夹，请拖入游戏的 *_Data 文件夹。",
+  "gameNoGGM": "里面没有 globalgamemanagers，不是 Unity 游戏的 *_Data 文件夹。",
+  "gameNoBuiltin": "里面没有 Resources/unity_builtin_extra，无法定位内置着色器。",
+  "output": "输出目录",
+  "change": "更改…",
+  "outputTitle": "选择输出目录",
+  "outputInside": "输出目录不能放在输入目录之内。",
+  "outputSame": "输出目录不能与输入目录相同。",
+  "diskLow": "输出位置所在磁盘剩余 {free}，可能不够（约需 {need}）。",
+  "@diskLow": {
+    "placeholders": {
+      "free": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "start": "开始转换",
+  "cancel": "取消",
+  "stepScan": "扫描资产",
+  "stepConvert": "转换着色器",
+  "stepWrite": "写出资产",
+  "overall": "总进度",
+  "converting": "正在转换 {name}",
+  "@converting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "currentShader": "当前 shader：{name}",
+  "@currentShader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "counts": "已处理 {done} / {total} 个程序 · 失败 {failed}",
+  "@counts": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "elapsed": "已用时 {time}",
+  "@elapsed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eta": "本步预计还需 {time}",
+  "@eta": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "seconds": "{s} 秒",
+  "@seconds": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "minutes": "{m} 分 {s} 秒",
+  "@minutes": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      },
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "liveLog": "日志（{lines} 行）",
+  "@liveLog": {
+    "placeholders": {
+      "lines": {
+        "type": "int"
+      }
+    }
+  },
+  "doneTitle": "转换完成",
+  "partialTitle": "部分成功：有 shader 转换失败",
+  "partialHint": "其余 shader 已正常输出；失败项见下表与 audit JSON。失败的变体已从资产中移除，游戏里对应材质可能显示异常。",
+  "statConverted": "成功转换 {n} 个程序",
+  "@statConverted": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statRemoved": "删除变体 {n} 个",
+  "@statRemoved": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statFailed": "失败 shader {n} 个",
+  "@statFailed": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statShaders": "共 {n} 个 shader",
+  "@statShaders": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statTime": "用时 {time}",
+  "@statTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "failedList": "失败的 shader（{n}）",
+  "@failedList": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "failedMore": "… 另有 {n} 项，见 audit JSON",
+  "@failedMore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "failedTitle": "转换失败",
+  "failedAt": "转换失败：{step}",
+  "@failedAt": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "failedUnknown": "转换中止，没有给出原因，详情见日志。",
+  "inputProblem": "输入有误：{message}\n请确认拖入的是未经修改的游戏 *_Data 文件夹。",
+  "@inputProblem": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "logTail": "日志末尾",
+  "copyLog": "复制日志",
+  "copied": "已复制",
+  "openOutput": "打开输出目录",
+  "openAudit": "打开 audit JSON",
+  "convertAnother": "转换另一个",
+  "back": "返回",
+  "retry": "重试",
+  "replaceTitle": "输出目录“{name}”已有内容",
+  "@replaceTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "replaceDetail": "继续会覆盖其中同名的资产文件，其他文件保持不动。",
+  "replace": "继续",
+  "cancelled": "已取消。输出目录里可能留有不完整的文件。",
+  "mkdirFailed": "无法创建输出目录：{error}",
+  "@mkdirFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "disclaimerUnofficial": "非官方工具，与《活侠传》及 Unity 的权利人无关。",
+  "disclaimerNoShare": "请勿分发转换结果：输出里含有游戏资产，版权归原权利人所有，仅供你自己的正版游戏在本机使用。"
+}

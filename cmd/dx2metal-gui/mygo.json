@@ -1,0 +1,8 @@
+{
+  "name": "dx2metal GUI",
+  "identifier": "io.github.lom-dx2metal.gui",
+  "version": "0.1.0",
+  "copyright": "MIT · lom-dx2metal",
+  "out": "build",
+  "i18n": { "dir": "locales", "source": "zh-Hans" }
+}

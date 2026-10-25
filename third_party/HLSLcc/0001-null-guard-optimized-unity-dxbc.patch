@@ -1,0 +1,27 @@
+diff --git a/src/DataTypeAnalysis.cpp b/src/DataTypeAnalysis.cpp
+index a53fc5a..452d44a 100644
+--- a/src/DataTypeAnalysis.cpp
++++ b/src/DataTypeAnalysis.cpp
+@@ -117,6 +117,8 @@ static void SetCBOperandComponents(HLSLCrossCompilerContext *psContext, Operand
+     psContext->psShader->sInfo.GetConstantBufferFromBindingPoint(RGROUP_CBUFFER, psOperand->aui32ArraySizes[0], &psCBuf);
+     ShaderInfo::GetShaderVarFromOffset(psOperand->aui32ArraySizes[1], psOperand->aui32Swizzle, psCBuf, &psVarType, &isArray, NULL, &rebase, psContext->flags);
+ 
++    // Optimized Unity DXBC may omit the reflected cbuffer variable.
++    if (psVarType == NULL) return;
+     if (psVarType->Class == SVC_SCALAR)
+         psOperand->iNumComponents = 1;
+ }
+diff --git a/src/ShaderInfo.cpp b/src/ShaderInfo.cpp
+index 554f202..9d49815 100644
+--- a/src/ShaderInfo.cpp
++++ b/src/ShaderInfo.cpp
+@@ -262,6 +262,9 @@ int ShaderInfo::GetShaderVarFromOffset(const uint32_t ui32Vec4Offset,
+     int32_t* pi32Rebase, // Output swizzle rebase
+     uint32_t flags)
+ {
++    // Unity serialized DXBC can reference an optimized-away or absent cbuffer.
++    // Keep analysis conservative instead of dereferencing a null buffer.
++    if (psCBuf == NULL) return 0;
+     size_t i;
+ 
+     uint32_t ui32ByteOffset = ui32Vec4Offset * 16;
