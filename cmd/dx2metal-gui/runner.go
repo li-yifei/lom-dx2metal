@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"time"
 
-	"lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/convert"
 
-	"lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
 )
 
 // runner 隔离对转换包的调用：正式用 convert.Run，测试与截图用假的。

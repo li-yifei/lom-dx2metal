@@ -1,4 +1,4 @@
-module lom-dx2metal
+module github.com/li-yifei/lom-dx2metal
 
 go 1.26
 

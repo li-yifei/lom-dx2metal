@@ -15,7 +15,7 @@ import (
 
 	"github.com/pierrec/lz4/v4"
 
-	"lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
 )
 
 // 程序格式版本（Unity 2020.3）。

@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"lom-dx2metal/internal/metal"
-	"lom-dx2metal/internal/oracle"
-	"lom-dx2metal/internal/serialized"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/metal"
+	"github.com/li-yifei/lom-dx2metal/internal/oracle"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // stripBlob 去掉压缩数据（LZ4 压缩器不同，压缩字节允许不同），用于比较 Shader 对象其余部分。

@@ -20,7 +20,7 @@
 | 件 | 用什么 | 做对了的信号 |
 |---|---|---|
 | 引擎 | 使用 Unity 官方 Mac Mono Player **2020.3.49f1** 的 `macos_arm64_nondevelopment_mono` 变体；将 Windows 版 `Mortal_Data` 原样作为 Data 目录放入 `.app` | `Player.log` 显示架构为 `arm64`、版本为 `2020.3.49f1`、Metal 初始化成功；运行进程的 `sysctl.proc_translated=0` |
-| 着色器 | 使用开源工具 `lom-dx2metal`（`[仓库地址]`）对 Data 目录执行一次转换，将转换输出替换进 `.app` | 工具报告转换成功数 `≥2546/2550`；`Player.log` 中 `platform 14 is not available` 出现 0 次、`not supported on this GPU` 出现 0 次；标题画面显示完整且无品红色块 |
+| 着色器 | 使用开源工具 `lom-dx2metal`（https://github.com/li-yifei/lom-dx2metal）对 Data 目录执行一次转换，将转换输出替换进 `.app` | 工具报告转换成功数 `≥2546/2550`；`Player.log` 中 `platform 14 is not available` 出现 0 次、`not supported on this GPU` 出现 0 次；标题画面显示完整且无品红色块 |
 | Steam | Steamworks.NET **20.1.0**：托管层使用 `STEAMWORKS_LIN_OSX` + `STEAMWORKS_X64` 编译宏从同版本源码重新编译；`libsteam_api.dylib` 取自该仓库随附的 Mac 版 `arm64` 切片；运行期间保持 Mac Steam 客户端处于已登录状态 | 日志成功获取到 Steam ID，且无 `SteamAPI_Init` 失败报错 |
 | Wwise | 游戏使用 Wwise **2021.1.14** Unity 集成。从我本机 Audiokinetic Launcher 安装的同主版本集成包中提取 macOS 版 `AkSoundEngine`（由我来安装 Launcher，你负责告诉我需要安装哪个具体版本、目标文件在哪个路径）。因小版本号不同会缺少少数原生导出符号：查看 `Player.log` 中的 `MissingMethodException` 指向哪个托管方法，在 `AK.Wwise.Unity.API.dll` 中把那一个方法改成直接返回 | 日志输出 `Sound engine initialized`；标题界面按钮悬停有音效；一段 BGM 能够完整播放 |
 | 存档 | 存档目录映射为 Windows `AppData/LocalLow/Obb Studio/Mortal` ↔ Mac `~/Library/Application Support/Obb Studio/Mortal`；测试阶段必须指定独立 `HOME` 环境变量运行，严禁触碰真实存档 | 新建存档可正常保存并读回；复制进来的旧存档可正常加载 |

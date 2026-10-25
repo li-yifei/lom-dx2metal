@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"lom-dx2metal/internal/dxbc"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/dxbc"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // unityTypeToSVT：Unity 参数 m_Type（0 float、1 int、2 bool）→ D3D 变量类型。

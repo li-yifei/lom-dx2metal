@@ -14,7 +14,7 @@ import (
 	"github.com/egoist/mygo/i18n"
 	"github.com/egoist/mygo/ui"
 
-	"lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/convert"
 )
 
 // fakeData 造一个合格的 *_Data 目录。

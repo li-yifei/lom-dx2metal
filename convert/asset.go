@@ -3,7 +3,7 @@ package convert
 import (
 	"errors"
 
-	"lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
 )
 
 // asset 是一个输入文件：普通 SerializedFile，或 UnityFS bundle 里的若干 SerializedFile。

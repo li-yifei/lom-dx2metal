@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"lom-dx2metal/internal/metal"
-	"lom-dx2metal/internal/params"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/metal"
+	"github.com/li-yifei/lom-dx2metal/internal/params"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // 顶点输入语义 → Unity 顶点通道（metal_parameters.vertex_channels）。

@@ -13,9 +13,9 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/convert"
 
-	"lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
 )
 
 type phase int

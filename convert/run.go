@@ -13,9 +13,9 @@ import (
 	"sync"
 	"time"
 
-	"lom-dx2metal/internal/metal"
-	"lom-dx2metal/internal/serialized"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/metal"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // InputError 表示输入有问题（CLI 退出码 2）。

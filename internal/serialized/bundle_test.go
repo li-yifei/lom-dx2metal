@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"lom-dx2metal/internal/oracle"
+	"github.com/li-yifei/lom-dx2metal/internal/oracle"
 )
 
 // bundle：解析→内部 SerializedFile 往返→重新打包→再解析，内容逐字节相等。

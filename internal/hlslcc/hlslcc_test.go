@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"lom-dx2metal/internal/oracle"
+	"github.com/li-yifei/lom-dx2metal/internal/oracle"
 )
 
 // 与 Python 版使用的 hlslcc-cli（同一份源码编译）逐字节对比研究目录里留存的 DXBC 样本。

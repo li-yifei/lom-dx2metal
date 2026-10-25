@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"lom-dx2metal/internal/oracle"
+	"github.com/li-yifei/lom-dx2metal/internal/oracle"
 )
 
 // 验收 2：不改任何对象时，读→写与输入逐字节相等；每个 Shader 对象按类型树读→写也逐字节相等。

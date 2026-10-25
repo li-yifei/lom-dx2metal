@@ -9,8 +9,8 @@ import (
 	"sort"
 	"testing"
 
-	"lom-dx2metal/internal/oracle"
-	"lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/oracle"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
 )
 
 var update = flag.Bool("update", false, "从 Unity 官方 Player 的 unity default resources 重新导出 testdata")

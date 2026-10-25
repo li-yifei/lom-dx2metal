@@ -11,10 +11,10 @@ import (
 	"strings"
 	"testing"
 
-	"lom-dx2metal/internal/metal"
-	"lom-dx2metal/internal/oracle"
-	"lom-dx2metal/internal/serialized"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/metal"
+	"github.com/li-yifei/lom-dx2metal/internal/oracle"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // 参考信息（不判失败）：与 DESIGN 最初指定的旧 oracle 比较——ports/arm64/build/metal-bulk/ 的 MSL 与

@@ -16,9 +16,9 @@ import (
 	"strings"
 	"syscall"
 
-	"lom-dx2metal/convert"
-	"lom-dx2metal/internal/serialized"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // Version 是工具版本。

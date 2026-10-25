@@ -12,7 +12,7 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
 )
 
 func main() {

@@ -9,13 +9,13 @@ import (
 	"sort"
 	"strings"
 
-	"lom-dx2metal/internal/dxbc"
-	"lom-dx2metal/internal/hlslcc"
-	"lom-dx2metal/internal/metal"
-	"lom-dx2metal/internal/params"
-	"lom-dx2metal/internal/relayout"
-	"lom-dx2metal/internal/serialized"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/dxbc"
+	"github.com/li-yifei/lom-dx2metal/internal/hlslcc"
+	"github.com/li-yifei/lom-dx2metal/internal/metal"
+	"github.com/li-yifei/lom-dx2metal/internal/params"
+	"github.com/li-yifei/lom-dx2metal/internal/relayout"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // 平台号。

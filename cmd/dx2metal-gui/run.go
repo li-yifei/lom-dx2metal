@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"lom-dx2metal/convert"
+	"github.com/li-yifei/lom-dx2metal/convert"
 
-	"lom-dx2metal/cmd/dx2metal-gui/locales"
+	"github.com/li-yifei/lom-dx2metal/cmd/dx2metal-gui/locales"
 )
 
 // stepDef 是 convert 命令的一个步骤，weight 是它在总进度条里的占比。

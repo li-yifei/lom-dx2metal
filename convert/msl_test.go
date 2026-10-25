@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"lom-dx2metal/internal/oracle"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/oracle"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // 验收 3：对 Python 版（tools/gen_oracle.py，即当前 lom-arm64-converter）产出的每个 .metal，

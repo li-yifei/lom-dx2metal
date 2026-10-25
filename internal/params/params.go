@@ -6,8 +6,8 @@ package params
 import (
 	"fmt"
 
-	"lom-dx2metal/internal/serialized"
-	"lom-dx2metal/internal/shaderblob"
+	"github.com/li-yifei/lom-dx2metal/internal/serialized"
+	"github.com/li-yifei/lom-dx2metal/internal/shaderblob"
 )
 
 // VectorParam 是向量/标量参数（m_VectorParams）。
