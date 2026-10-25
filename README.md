@@ -9,7 +9,20 @@
 
 设计与验收标准见 [DESIGN.md](DESIGN.md)。
 
-## 构建
+## 两种用法：图形界面或命令行
+
+**图形界面**（推荐给大多数玩家）：`cmd/dx2metal-gui/`，原生 macOS 窗口，把游戏的 `*_Data` 文件夹拖进去、点“开始转换”即可。
+简体中文、繁體中文、日本語三语，进度、失败列表、打开输出目录和 audit 都在界面里。详见 [cmd/dx2metal-gui/README.md](cmd/dx2metal-gui/README.md)。
+
+![图形界面：转换完成](cmd/dx2metal-gui/screenshots/10-real-done.png)
+
+```bash
+cd cmd/dx2metal-gui && ./build.sh      # 生成 build/dx2metal GUI.app（arm64，ad-hoc 签名）
+```
+
+**命令行** `dx2metal`：适合脚本化和给 agent 用，下面详述。两者都只调用同一个 Go 包 `convert`，结果完全一致。
+
+## 构建命令行工具
 
 需要 Apple Silicon Mac、Xcode 命令行工具（`xcode-select --install`，cgo 要用 clang 与 Metal.framework）和 Go 1.26+。
 HLSLcc 源码在 `third_party/HLSLcc/`，由 cgo 静态编进二进制；不需要 Python、不调用任何子进程。
