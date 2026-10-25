@@ -107,7 +107,7 @@ func (g *gui) header(c *ui.Context) {
 	})
 }
 
-// footer 把“非官方”与“不要分发转换结果”固定在窗口底部。
+// footer 把“非官方”与“只能自己玩、别传给别人”固定在窗口底部。
 func (g *gui) footer(c *ui.Context) {
 	t := c.Theme()
 	ui.Column(c).Gap(2).Padding(10, 0, 0, 0).Border(0, t.Border).Children(func() {
